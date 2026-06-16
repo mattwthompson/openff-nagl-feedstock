@@ -35,6 +35,13 @@ jobs:
 
     - name: Checkout code
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - name: Configure binfmt_misc
+      if: matrix.os == 'ubuntu'
+      shell: bash
+      run: |
+        if [[ "$(uname -m)" == "x86_64" ]]; then
+          docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
+        fi
 
     - name: Build on Linux
       id: build-linux
@@ -52,15 +59,13 @@ jobs:
         STAGING_BINSTAR_TOKEN: ${{ secrets.STAGING_BINSTAR_TOKEN }}
       shell: bash
       run: |
-        if [[ "$(uname -m)" == "x86_64" ]]; then
-          echo "::group::Configure binfmt_misc"
-          docker run --rm --privileged multiarch/qemu-user-static:register --reset --credential yes
-        fi
+        export CONDA_BLD_PATH="${CONDA_BLD_PATH/#~/${HOME}}"
+        export FEEDSTOCK_NAME="$(basename $GITHUB_REPOSITORY)"
+        export GIT_BRANCH="$(basename $GITHUB_REF)"
+        export MINIFORGE_HOME="${MINIFORGE_HOME/#~/${HOME}}"
         export flow_run_id="github_$GITHUB_RUN_ID"
         export remote_url="https://github.com/$GITHUB_REPOSITORY"
         export sha="$GITHUB_SHA"
-        export FEEDSTOCK_NAME="$(basename $GITHUB_REPOSITORY)"
-        export GIT_BRANCH="$(basename $GITHUB_REF)"
         if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
           export IS_PR_BUILD="True"
         else
@@ -80,16 +85,24 @@ jobs:
         CONFIG: ${{ matrix.CONFIG }}
         UPLOAD_PACKAGES: ${{ matrix.UPLOAD_PACKAGES }}
         CI: github_actions
+        CONDA_BLD_PATH: ${{ matrix.build_workspace_dir }}
+        CONFIG: ${{ matrix.CONFIG }}
+        MINIFORGE_HOME: ${{ matrix.tools_install_dir }}
+        UPLOAD_PACKAGES: ${{ matrix.UPLOAD_PACKAGES }}
+        RATTLER_BUILD_COLOR: always
+        RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: 'true'
         BINSTAR_TOKEN: ${{ secrets.BINSTAR_TOKEN }}
         FEEDSTOCK_TOKEN: ${{ secrets.FEEDSTOCK_TOKEN }}
         STAGING_BINSTAR_TOKEN: ${{ secrets.STAGING_BINSTAR_TOKEN }}
       shell: bash
       run: |
+        export CONDA_BLD_PATH="${CONDA_BLD_PATH/#~/${HOME}}"
+        export FEEDSTOCK_NAME="$(basename $GITHUB_REPOSITORY)"
+        export GIT_BRANCH="$(basename $GITHUB_REF)"
+        export MINIFORGE_HOME="${MINIFORGE_HOME/#~/${HOME}}"
         export flow_run_id="github_$GITHUB_RUN_ID"
         export remote_url="https://github.com/$GITHUB_REPOSITORY"
         export sha="$GITHUB_SHA"
-        export FEEDSTOCK_NAME="$(basename $GITHUB_REPOSITORY)"
-        export GIT_BRANCH="$(basename $GITHUB_REF)"
         if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
           export IS_PR_BUILD="True"
         else
@@ -114,7 +127,13 @@ jobs:
         PYTHONUNBUFFERED: 1
         CONFIG: ${{ matrix.CONFIG }}
         CI: github_actions
+        CONDA_BLD_PATH: ${{ matrix.build_workspace_dir }}
+        CONFIG: ${{ matrix.CONFIG }}
+        MINIFORGE_HOME: ${{ matrix.tools_install_dir }}
+        PYTHONUNBUFFERED: 1
         UPLOAD_PACKAGES: ${{ matrix.UPLOAD_PACKAGES }}
+        RATTLER_BUILD_COLOR: always
+        RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: 'true'
         BINSTAR_TOKEN: ${{ secrets.BINSTAR_TOKEN }}
         FEEDSTOCK_TOKEN: ${{ secrets.FEEDSTOCK_TOKEN }}
         STAGING_BINSTAR_TOKEN: ${{ secrets.STAGING_BINSTAR_TOKEN }}
