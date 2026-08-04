@@ -1,0 +1,89 @@
+schema_version: 1
+
+context:
+  python_min: "3.11"
+  version: "0.5.5"
+
+recipe:
+  name: openff-nagl-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/openforcefield/openff-nagl/archive/v${{ version }}.tar.gz
+  sha256: b2436950bce58ea67652ff558d307e4c53f8a82a50eccf85782c6c120846430d
+
+build:
+  number: 2
+
+outputs:
+  - package:
+      name: openff-nagl-base
+    build:
+      noarch: python
+      script:
+        file: build_base.sh
+    requirements:
+      host:
+        - python 3.11.*
+        - pip
+        - setuptools
+        - versioneer-518
+      run:
+        - python >=${{ python_min }}
+        - click
+        - click-option-group
+        - tqdm
+        - openff-toolkit-base >=0.11.0
+        - openff-units
+        - pyyaml
+        - pydantic <3
+        - pytorch >=2.6
+        - pytorch-lightning
+        - rdkit
+        - rich
+      run_constraints:
+        - dgl >=1.0,<=3
+        - openeye-toolkits
+    tests:
+      - python:
+          imports:
+            - openff.nagl
+          pip_check: false
+          python_version: ${{ python_min }}.*
+  - package:
+      name: openff-nagl
+    build:
+      noarch: python
+    requirements:
+      host:
+        - python 3.11.*
+      run:
+        - python >=${{ python_min }}
+        - openff-nagl-models >=0.1.0
+        - ${{ pin_subpackage('openff-nagl-base', exact=True) }}
+    tests:
+      - python:
+          imports:
+            - openff.nagl
+          pip_check: false
+          python_version: ${{ python_min }}.*
+      - files:
+          recipe:
+            - test_nagl.py
+        script:
+          - python test_nagl.py
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: A library for applying graph convolutional neural networks to molecules
+  homepage: https://openforcefield.org/
+  repository: https://github.com/openforcefield/openff-nagl
+
+extra:
+  feedstock-name: openff-nagl
+  recipe-maintainers:
+    - mattwthompson
+    - j-wags
+    - lilyminium
+
