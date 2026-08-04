@@ -24,7 +24,7 @@ outputs:
         file: build_base.sh
     requirements:
       host:
-        - python 3.11.*
+        - python ${{ python_min }}.*
         - pip
         - setuptools
         - versioneer-518
@@ -56,7 +56,7 @@ outputs:
       noarch: python
     requirements:
       host:
-        - python 3.11.*
+        - python ${{ python_min }}.*
       run:
         - python >=${{ python_min }}
         - openff-nagl-models >=0.1.0
@@ -86,4 +86,3 @@ extra:
     - mattwthompson
     - j-wags
     - lilyminium
-
