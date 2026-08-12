@@ -49,7 +49,9 @@ outputs:
           imports:
             - openff.nagl
           pip_check: false
-          python_version: ${{ python_min }}.*
+          python_version:
+            - ${{ python_min }}.*
+            - "*"
   - package:
       name: openff-nagl
     build:
