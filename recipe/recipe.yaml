@@ -68,7 +68,7 @@ outputs:
             - openff.nagl
           pip_check: false
           python_version: ${{ python_min }}.*
-      - files:
+        files:
           recipe:
             - test_nagl.py
         script:
