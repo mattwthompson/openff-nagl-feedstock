@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   python_min: "3.11"
-  version: "0.5.5"
+  version: "0.6.0"
 
 recipe:
   name: openff-nagl-split
@@ -13,7 +13,7 @@ source:
   sha256: b2436950bce58ea67652ff558d307e4c53f8a82a50eccf85782c6c120846430d
 
 build:
-  number: 2
+  number: 0
 
 outputs:
   - package:
@@ -27,7 +27,7 @@ outputs:
         - python ${{ python_min }}.*
         - pip
         - setuptools
-        - versioneer-518
+        - setuptools-scm
       run:
         - python >=${{ python_min }}
         - click
