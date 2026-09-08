@@ -14,5 +14,3 @@ molecule = Molecule.from_smiles("CC(=O)OC1=CC=CC=C1C(=O)O")
 molecule.assign_partial_charges(
     partial_charge_method="openff-gnn-am1bcc-1.0.0.pt",
 )
-
-ForceField("openff-2.3.0.offxml").create_interchange(molecule.to_topology())

@@ -61,7 +61,6 @@ outputs:
         - python ${{ python_min }}.*
       run:
         - python ${{ python_min }}.*
-        - openff-nagl-models >=0.1.0
         - ${{ pin_subpackage('openff-nagl-base', exact=True) }}
     tests:
       - python:
