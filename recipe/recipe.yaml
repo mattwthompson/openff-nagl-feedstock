@@ -69,15 +69,15 @@ outputs:
             - openff.nagl
           pip_check: false
           python_version: ${{ python_min }}.*
-      - requirements:
-          run:
-            - python ${{ python_min }}.*
-            - openff-nagl-models >=2025
       - files:
           recipe:
             - test_nagl.py
         script:
           - python test_nagl.py
+        requirements:
+          run:
+            - python ${{ python_min }}.*
+            - openff-nagl-models >=2025
 
 about:
   license: MIT
