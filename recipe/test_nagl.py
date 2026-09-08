@@ -1,7 +1,7 @@
 from openff.nagl import GNNModel, __version__
 from openff.nagl_models import list_available_nagl_models
 
-from openff.toolkit import Molecule, ForceField
+from openff.toolkit import Molecule
 
 assert __version__ != "0.0.0", f"Version check failed! Found {__version__=}"
 
