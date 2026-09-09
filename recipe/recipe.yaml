@@ -29,7 +29,7 @@ outputs:
         - setuptools
         - setuptools-scm
       run:
-        - python ${{ python_min }}.*
+        - python >=${{ python_min }}
         - click
         - click-option-group
         - tqdm
