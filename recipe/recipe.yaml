@@ -1,8 +1,8 @@
 schema_version: 1
 
 context:
-  python_min: "3.11"
-  version: "0.5.5"
+  python_min: "3.12"
+  version: "0.6.0"
 
 recipe:
   name: openff-nagl-split
@@ -10,10 +10,10 @@ recipe:
 
 source:
   url: https://github.com/openforcefield/openff-nagl/archive/v${{ version }}.tar.gz
-  sha256: b2436950bce58ea67652ff558d307e4c53f8a82a50eccf85782c6c120846430d
+  sha256: d984e3a30153be926f31b2fbe24ee19720f2ecee870ecb0b7e4737d8fdb96642
 
 build:
-  number: 2
+  number: 1
 
 outputs:
   - package:
@@ -27,7 +27,7 @@ outputs:
         - python ${{ python_min }}.*
         - pip
         - setuptools
-        - versioneer-518
+        - setuptools-scm
       run:
         - python >=${{ python_min }}
         - click
@@ -36,7 +36,7 @@ outputs:
         - openff-toolkit-base >=0.11.0
         - openff-units
         - pyyaml
-        - pydantic <3
+        - pydantic =2
         - pytorch >=2.6
         - pytorch-lightning
         - rdkit
@@ -51,7 +51,6 @@ outputs:
           pip_check: false
           python_version:
             - ${{ python_min }}.*
-            - "*"
   - package:
       name: openff-nagl
     build:
@@ -69,7 +68,7 @@ outputs:
             - openff.nagl
           pip_check: false
           python_version: ${{ python_min }}.*
-      - files:
+        files:
           recipe:
             - test_nagl.py
         script:
