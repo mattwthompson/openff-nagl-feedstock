@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   python_min: "3.12"
-  version: "0.6.0"
+  version: "0.6.1"
 
 recipe:
   name: openff-nagl-split
@@ -10,10 +10,10 @@ recipe:
 
 source:
   url: https://github.com/openforcefield/openff-nagl/archive/v${{ version }}.tar.gz
-  sha256: d984e3a30153be926f31b2fbe24ee19720f2ecee870ecb0b7e4737d8fdb96642
+  sha256: 423aba5bf57db461d8021cdf9e0dc69f9b289d2cd27b6d2735ac9e62dddacd94
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - package:
